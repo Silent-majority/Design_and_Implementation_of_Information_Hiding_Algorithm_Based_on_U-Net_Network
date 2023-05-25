@@ -52,6 +52,11 @@ def ini():
     hide_net.to(device)
     reveal_net.to(device)
 
+    print('初始化模型。。。。。。')
+    tensor = torch.zeros(1, 3, IMG_SIZE, IMG_SIZE).to(device)
+    reveal_net(tensor)
+    print('初始化完成')
+
 
 # 加载文件
 def load_file(img: Label, flag: str):
@@ -116,7 +121,9 @@ def hide(img: Label):
         carrier_img = carrier_img.to(device)
 
         # 获取含秘图像
+        print('信息嵌入。。。')
         res_image = hide_net(secret_img, carrier_img).cpu()[0]
+        print('嵌入完成')
         image = transforms.ToPILImage()(res_image)
 
         # 显示该图像
@@ -140,7 +147,9 @@ def reveal(img: Label):
         carrier_secret_img = carrier_secret_img.to(device)
 
         # 提取秘密信息
+        print('信息提取。。。')
         res_secret_image = reveal_net(carrier_secret_img).cpu()[0]
+        print('提取完成')
         image = transforms.ToPILImage()(res_secret_image)
 
         # 显示该图像
